@@ -1,7 +1,7 @@
 <?php
 
 
-	class AutocompleteMention extends MantisPlugin {
+	class AutocompleteMentionPlugin extends MantisPlugin {
 		const VERSION = '0.1';
 
 		public function register() {
@@ -49,8 +49,11 @@
 
 		public function resources($event) {
 			return '
+			<script src="' . plugin_file("jquery-ui.js") . '"></script>
 			<script src="' . plugin_file("autocomplete-mention.js") . '"></script>
+
 			<link rel="stylesheet" type="text/css" href="' . plugin_file("autocomplete-mention.css") . '"/>
+			<link rel="stylesheet" type="text/css" href="' . plugin_file("jquery-ui.css") . '"/>
 			';
 		}
 
