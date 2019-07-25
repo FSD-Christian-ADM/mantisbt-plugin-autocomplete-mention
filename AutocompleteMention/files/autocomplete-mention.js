@@ -15,7 +15,6 @@ jQuery(document).ready(function() {
 
 	var textarea_dom = null;
 
-
 	$("textarea").keypress(function(e) {
 
 
@@ -33,8 +32,45 @@ jQuery(document).ready(function() {
 				listening = false;
 			}
 
-			if (character_entered == "@" || listening) {
+			if (character_entered == "@") {
 
+				// get xy-position of typed "@" and position autocomplete
+				var phantom = $("<div></div>");
+				$(phantom)
+					.css("position","absolute")
+					.css("height","100%")
+					.css("width","100%")
+					.css("display","inline-block")
+					.css("font-size", $(this).css("font-size"))
+					.css("font-family", $(this).css("font-family"))
+					.css("visibility","hidden");
+
+				var carret_position = $(this).prop("selectionStart");
+
+				$(phantom).append($(this).val().replace(/\n/g, '<br/>').substring(0,carret_position));
+				$(phantom).append("<span></span>");
+				$(phantom).append($(this).val().replace(/\n/g, '<br/>').substring(carret_position));
+
+				$(phantom).appendTo($(this).parent());
+				var dropdown_position = $(phantom).find("span").position();
+				$(phantom).remove();
+
+				var pos_top = dropdown_position.top + 25; // add some padding
+				var pos_left = dropdown_position.left + 16;
+
+				// when content of textarea is higher than the input area (aka scrollbars) just set the left position
+				if(pos_top > $(this).height()) {
+					pos_top = $(this).height();
+				}
+
+				$(this).autocomplete( "option", "position", {
+					my: "left top",
+					at: "left+" + pos_left + " top+" + pos_top
+				});
+
+
+
+				// keep listening to following key strokes
 				listening = true;
 
 			}
@@ -49,9 +85,11 @@ jQuery(document).ready(function() {
 
 					var textarea_content = $(textarea_dom).val(); // + character_entered; // pressed character has to be added because it is not visible when event triggers
 
+					var carret_position = $(textarea_dom).prop("selectionStart");
+
 					var project_id = $("input[name='project_id']").val();
 
-					var input_string = textarea_content.substr(textarea_content.lastIndexOf("@") + 1);
+					var input_string = textarea_content.substring(textarea_content.lastIndexOf("@", carret_position) + 1, carret_position);
 
 					var rest_params = project_id + "/" + input_string;
 
@@ -73,6 +111,9 @@ jQuery(document).ready(function() {
 				}
 				*/
 			},
+
+
+
 			focus: function() {
 
 				// prevent value inserted on focus
@@ -98,45 +139,6 @@ jQuery(document).ready(function() {
 
 
 
-
-
-/*
-	$("textarea").keypress(function(e) {
-		var character_entered = String.fromCharCode(e.which);
-
-		if(e.which === 32 || e.which === 13 || character_entered == " ") {
-			listening = false;
-		}
-
-		if(character_entered == "@" || listening) {
-
-			listening = true;
-
-			var textarea_content = $(this).val() + character_entered; // pressed character has to be added because it is not visible when event triggers
-
-			var project_id = $("input[name='project_id']").val();
-
-			var input_string = textarea_content.substr(textarea_content.lastIndexOf("@") + 1);
-
-			var rest_params = project_id + "/" + input_string ;
-
-			console.log(rest_endpoint + "/" + rest_params);
-
-			$.get(rest_endpoint)
-				.done(function (data) {
-					console.log(data);
-				})
-				.fail(function () {
-					console.error('Error occurred while retrieving user list');
-				});
-
-
-		}
-
-	});
-
-
-	*/
 
 
 });
