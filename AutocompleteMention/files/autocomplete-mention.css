@@ -3,3 +3,8 @@
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
+.ui-autocomplete li div span{
+	font-style: italic;
+	color: #c0c0c0;
+}

@@ -22,10 +22,7 @@
 				if(strpos(strtolower($u["username"]), $searchstring) !== FALSE ||
 					strpos(strtolower($u["realname"]), $searchstring) !== FALSE)
 				{
-					/*$t_users[] = array(	"username" => $u["username"],
-										"realname" => $u["realname"]);
-					*/
-					$t_users[] = $u["username"] . " " . $u["realname"];
+					$t_users[] = $u["username"]." (".$u["realname"].")";
 				}
 
 			}
