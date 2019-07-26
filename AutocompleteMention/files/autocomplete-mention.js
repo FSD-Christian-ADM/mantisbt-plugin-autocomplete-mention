@@ -49,7 +49,7 @@ jQuery(document).ready(function() {
 			$(phantom).append("<span></span>");
 			$(phantom).append($(this).val().replace(/\n/g, '<br/>').substring(carret_position));
 
-			$(phantom).appendTo($(this).parent());
+			// $(phantom).appendTo($(this).parent());
 			var dropdown_position = $(phantom).find("span").position();
 			$(phantom).remove();
 
@@ -115,6 +115,9 @@ jQuery(document).ready(function() {
 			}
 
 			$(this).val(display_value);
+
+			// set carret after the inserted text
+			this.setSelectionRange(identifier_position + ui.item.value.length + 1, identifier_position + ui.item.value.length + 1);
 
 			listening = false;
 
