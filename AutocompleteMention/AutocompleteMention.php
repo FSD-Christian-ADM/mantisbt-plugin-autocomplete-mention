@@ -12,8 +12,7 @@
 			$this->version = self::VERSION;
 
 			$this->requires = array(
-				"MantisCore" => "2.3.0",
-				// TODO jquery
+				"MantisCore" => "2.3.0"
 			);
 
 			$this->author = "FSD-Christian";
@@ -35,9 +34,7 @@
 
 		public function hooks() {
 			return array(
-
 				"EVENT_LAYOUT_RESOURCES" => "resources",
-
 				'EVENT_REST_API_ROUTES' => 'routes',
 			);
 		}
@@ -90,9 +87,10 @@
 		 * @return Slim\Http\Response
 		 */
 		public function get_users($request, $response, $args) {
+
 			plugin_push_current( $this->basename );
 
-			# Set the reference Bug Id for placeholders replacements
+
 			if( isset( $args['project_id'] ) ) {
 				$t_project_id = (int)$args['project_id'];
 			} else {

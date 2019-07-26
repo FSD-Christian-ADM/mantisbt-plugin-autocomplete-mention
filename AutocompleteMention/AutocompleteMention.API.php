@@ -13,6 +13,8 @@
 
 		public function getUsersFromProject($p_project_id, $searchstring) {
 
+			// TODO only for logged in users!!!!!
+
 			$t_users = array();
 
 			$all_users = project_get_all_user_rows($p_project_id);
