@@ -22,12 +22,13 @@
 				if(strpos(strtolower($u["username"]), $searchstring) !== FALSE ||
 					strpos(strtolower($u["realname"]), $searchstring) !== FALSE)
 				{
-					$t_users[] = $u["username"]." (".$u["realname"].")";
+					$t_users[$u["realname"]] = $u["username"]." (".$u["realname"].")";
 				}
 
 			}
 
-			// TODO sort by realname
+			ksort($t_users);
+			$t_users = array_values($t_users);
 
 
 

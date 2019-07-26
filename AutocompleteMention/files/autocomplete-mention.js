@@ -15,7 +15,7 @@ jQuery(document).ready(function() {
 
 	var textarea_dom = null;
 
-	$("textarea").keypress(function(e) {
+	$("textarea, #bug_monitor_list_username").keypress(function(e) {
 
 
 		textarea_dom = this;
@@ -30,9 +30,7 @@ jQuery(document).ready(function() {
 
 		if (e.which === 32 || e.which === 13 || character_entered == " ") {
 			listening = false;
-		}
-
-		if (character_entered == "@") {
+		} else if (character_entered == "@" || $(this).attr("id") == "bug_monitor_list_username") {
 
 			// get xy-position of typed "@" and position autocomplete
 			var phantom = $("<div></div>");
@@ -110,7 +108,13 @@ jQuery(document).ready(function() {
 			var carret_position = $(textarea_dom).prop("selectionStart");
 			var identifier_position = textarea_content.lastIndexOf("@", carret_position);
 
-			$(this).val( textarea_content.substr(0, identifier_position + 1 ) + ui.item.value + textarea_content.substring(carret_position));
+			var display_value = textarea_content.substr(0, identifier_position + 1 ) + ui.item.value + textarea_content.substring(carret_position);
+
+			if($(this).attr("id") == "bug_monitor_list_username") {
+				display_value = display_value.split(" ")[0];
+			}
+
+			$(this).val(display_value);
 
 			listening = false;
 

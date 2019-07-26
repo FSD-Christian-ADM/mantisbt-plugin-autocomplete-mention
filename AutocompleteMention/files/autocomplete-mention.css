@@ -2,6 +2,7 @@
 	max-height: 180px;
 	overflow-y: auto;
 	overflow-x: hidden;
+	width: 300px;
 }
 
 .ui-autocomplete li div span{
