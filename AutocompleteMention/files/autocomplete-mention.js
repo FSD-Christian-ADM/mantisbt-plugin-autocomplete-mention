@@ -12,8 +12,11 @@ jQuery(document).ready(function() {
 
 	var listening = false;
 
-
 	var textarea_dom = null;
+
+	var input_element = "textarea";
+
+	var input_identifier = "@";
 
 	$("textarea, #bug_monitor_list_username").keypress(function(e) {
 
@@ -25,12 +28,17 @@ jQuery(document).ready(function() {
 			e.preventDefault();
 		}
 
+		if($(this).attr("id") == "bug_monitor_list_username") {
+			input_element = "bug_monitor_list_username";
+			input_identifier = ",";
+		}
+
 
 		var character_entered = String.fromCharCode(e.which);
 
 		if (e.which === 32 || e.which === 13 || character_entered == " ") {
 			listening = false;
-		} else if (character_entered == "@" || $(this).attr("id") == "bug_monitor_list_username") {
+		} else if (character_entered == "@" || input_element == "bug_monitor_list_username") {
 
 			// get xy-position of typed "@" and position autocomplete
 			var phantom = $("<div></div>");
@@ -84,7 +92,8 @@ jQuery(document).ready(function() {
 
 				var project_id = $("input[name='project_id']").val();
 
-				var input_string = textarea_content.substring(textarea_content.lastIndexOf("@", carret_position) + 1, carret_position);
+
+				var input_string = textarea_content.substring(textarea_content.lastIndexOf(input_identifier, carret_position) + 1, carret_position);
 
 				var rest_params = project_id + "/" + input_string;
 
@@ -106,12 +115,12 @@ jQuery(document).ready(function() {
 			var textarea_content = $(textarea_dom).val();
 
 			var carret_position = $(textarea_dom).prop("selectionStart");
-			var identifier_position = textarea_content.lastIndexOf("@", carret_position);
+			var identifier_position = textarea_content.lastIndexOf(input_identifier, carret_position);
 
 			var display_value = textarea_content.substr(0, identifier_position + 1 ) + ui.item.value + textarea_content.substring(carret_position);
 
-			if($(this).attr("id") == "bug_monitor_list_username") {
-				display_value = display_value.split(" ")[0];
+			if(input_element == "bug_monitor_list_username") {
+				display_value = display_value.split(" ")[0] + ",";
 			}
 
 			$(this).val(display_value);
