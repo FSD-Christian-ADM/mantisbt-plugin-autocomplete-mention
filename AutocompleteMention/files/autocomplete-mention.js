@@ -85,18 +85,27 @@ jQuery(document).ready(function() {
 
 				var carret_position = $(textarea_dom).prop("selectionStart");
 
-				var project_id = $("input[name='project_id']").val();
+				var search_id = $("input[name='project_id']").val();
 
-				// TODO read bug id when no project_id is found (happens when editing bug)
-				// todo read bug id when not in edit mode
 
+				// when not creating a new bug (eg editing or on bug view page) get bug_id (project_id is read from server then)
+				var tmp_rest_endpoint = rest_endpoint + "-from-project-id";
+
+				if(!search_id) {
+					search_id = $(textarea_dom).parents("form").eq(0).find("input[name='bug_id']").val();
+					tmp_rest_endpoint = rest_endpoint + "-from-bug-id";
+				}
 
 				var input_string = textarea_content.substring(textarea_content.lastIndexOf(input_identifier, carret_position) + 1, carret_position);
 
-				var rest_params = project_id + "/" + input_string;
+				if(input_string.trim() == "") {
+					input_string = "+";
+				}
+
+				var rest_params = search_id + "/" + input_string;
 
 				// get list pf users via REST-request
-				$.getJSON(rest_endpoint + "/" + rest_params, {
+				$.getJSON(tmp_rest_endpoint + "/" + rest_params, {
 
 				}, response);
 

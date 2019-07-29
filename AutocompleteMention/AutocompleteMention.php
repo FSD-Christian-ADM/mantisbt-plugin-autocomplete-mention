@@ -67,7 +67,8 @@
 			$t_app->group(
 				plugin_route_group(),
 				function() use ( $t_app, $t_plugin ) {
-					$t_app->get( '/get-users/{project_id}/{searchstring}', [$t_plugin, 'get_users'] );
+					$t_app->get( '/get-users-from-project-id/{project_id}/{searchstring}', [$t_plugin, 'get_users'] );
+					$t_app->get( '/get-users-from-bug-id/{bug_id}/{searchstring}', [$t_plugin, 'get_users'] );
 				}
 			);
 		}
@@ -93,23 +94,28 @@
 
 			if( isset( $args['project_id'] ) ) {
 				$t_project_id = (int)$args['project_id'];
+			} else if(isset($args['bug_id'])) {
+				$t_project_id = bug_get_field($args["bug_id"], "project_id");
 			} else {
-				// TODO error
-				$t_project_id = 0;
+				// we should never get here
+				return $response
+					->withStatus( HTTP_STATUS_SUCCESS )
+					->withJson( array() );
 			}
 
 			if( isset( $args['searchstring'] ) ) {
 				$t_searchstring = $args['searchstring'];
 			} else {
-				// TODO error
-				$t_searchstring = "";
+				// we should never get here
+				return $response
+					->withStatus( HTTP_STATUS_SUCCESS )
+					->withJson( array() );
 			}
 
 
 			$API = new AutocompleteMentionAPI();
 
 			$users = $API->getUsersFromProject($t_project_id, $t_searchstring);
-
 
 			plugin_pop_current();
 
