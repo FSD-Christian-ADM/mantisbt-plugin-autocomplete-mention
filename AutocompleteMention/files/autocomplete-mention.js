@@ -75,7 +75,7 @@ jQuery(document).ready(function() {
 
 	})
 	.autocomplete({
-			
+
 		autoFocus: true,
 
 		source: function( request, response ) {

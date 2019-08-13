@@ -27,8 +27,8 @@
 			foreach($all_users as $u) {
 
 				if($searchstring == "+" ||
-					strpos(strtolower($u["username"]), $searchstring) !== FALSE ||
-					strpos(strtolower($u["realname"]), $searchstring) !== FALSE)
+					strpos(strtolower($u["username"]), strtolower($searchstring)) !== FALSE ||
+					strpos(strtolower($u["realname"]), strtolower($searchstring)) !== FALSE)
 				{
 					$t_users[$u["realname"]] = $u["username"]." (".$u["realname"].")";
 				}
