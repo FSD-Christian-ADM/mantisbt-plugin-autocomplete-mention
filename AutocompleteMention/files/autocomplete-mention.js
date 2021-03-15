@@ -12,7 +12,23 @@ jQuery(document).ready(function() {
 	var input_element = "textarea";
 	var input_identifier = "@";
 
-	$("textarea, #bug_monitor_list_username").keypress(function(e) {
+	var bug_monitor_list_input_name = "autocomplete-mention-UNKNOWN-IDENTIFIER";
+	var bug_monitor_list_input_name_options = ["bug_monitor_list_username", "bug_monitor_list_user_to_add"];
+
+	//check what is the id is for the bug_monitor_list_input_name (varies between mantis pre and post 2.25.0)
+	$.each(bug_monitor_list_input_name_options, function() {
+		var check = $("#"+this);
+		if(check.length !== 0) {
+			bug_monitor_list_input_name = this;
+		}
+	});
+
+	if(bug_monitor_list_input_name == "autocomplete-mention-UNKNOWN-IDENTIFIER") {
+		console.log("autocomplete-mention: identifier for bug monitor list not found. did you install a mantis update recently?");
+	}
+
+
+	$("textarea, #"+bug_monitor_list_input_name).keypress(function(e) {
 
 		textarea_dom = this;
 
@@ -21,8 +37,8 @@ jQuery(document).ready(function() {
 			e.preventDefault();
 		}
 
-		if($(this).attr("id") == "bug_monitor_list_username") {
-			input_element = "bug_monitor_list_username";
+		if($(this).attr("id") == bug_monitor_list_input_name) {
+			input_element = bug_monitor_list_input_name;
 			input_identifier = ",";
 		}
 
@@ -30,7 +46,7 @@ jQuery(document).ready(function() {
 
 		if (e.which === 32 || e.which === 13 || character_entered == " ") {
 			listening = false;
-		} else if (character_entered == "@" || input_element == "bug_monitor_list_username") {
+		} else if (character_entered == "@" || input_element == bug_monitor_list_input_name) {
 
 			// get xy-position of typed "@" (create an invisible div and copy the input's text there, add a span and get position of this span inside of the div)
 			// Note: that is not 100% accurate in scrolling textareas!
@@ -133,7 +149,7 @@ jQuery(document).ready(function() {
 			var display_value = textarea_content.substr(0, identifier_position + 1 ) + ui.item.value + textarea_content.substring(carret_position);
 
 			// provide multiple user name mentions for the bug_monitor_list_username
-			if(input_element == "bug_monitor_list_username") {
+			if(input_element == bug_monitor_list_input_name) {
 				display_value = display_value.split(" ")[0] + ",";
 			}
 
