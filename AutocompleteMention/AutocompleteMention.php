@@ -7,7 +7,6 @@
 		public function register() {
 			$this->name = "Autocomplete Mention";
 			$this->description = "show selection of users when '@' is typed in a text input";
-			$this->page = "config_page";
 
 			$this->version = self::VERSION;
 
